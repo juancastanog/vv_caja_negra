@@ -1,10 +1,10 @@
-	package com.practica.cajanegra;
+package com.practica.cajanegra;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-
-class reverseTests {
+// isSubList(AbstractSingleLinkedListImpl<T> part)
+class SubListsTests {
 
 	@Test
 	void test() {

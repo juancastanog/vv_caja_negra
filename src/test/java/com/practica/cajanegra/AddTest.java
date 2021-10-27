@@ -22,7 +22,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class addTest {
+class AddTest {
 	private SingleLinkedListImpl<String> listaTest; 
 	
 	@BeforeEach
@@ -33,14 +33,14 @@ class addTest {
 	
 	// Metodo addLast, admite  cualquier tipo de input siempre y cuando éste sea una string.
 	@ParameterizedTest(name="addLast {0} in list")
-	@ValueSource(strings= {"@", "A", "B", "M", "Y", "Z", "[","1938"})
+	@ValueSource(strings= {"@", "A", "B", "M", "Y", "Z", "["})
 	public void addLast(String s) {
 		this.listaTest.addLast(s);
 		assertEquals("[A, B, C, " + s + "]", this.listaTest.toString());
 	}
 
 	
-	// Metodo addFirst, no añade los elementos en la primera posicion (no los añade en ningun sitio de hecho :D )
+	// Metodo addFirst, no añade los elementos en la primera posicion
 	@ParameterizedTest(name="addFirst {0} in list")
 	@ValueSource(strings= {"@", "A", "B", "M", "Y", "Z", "["})
 	public void addFirst(String s) {
@@ -48,8 +48,8 @@ class addTest {
 		assertEquals("["+s+", A, B, C " + "]", this.listaTest.toString());
 	}
 	
-	// Inserta el elemento en la posición p, desplazando los elementos a partir de esa posición. Si la lista tiene menos de p elementos lo insertará como último elemento.
-
+	// Metodo addAtPos Inserta el elemento en la posición p, desplazando los elementos a partir de esa posición. 
+	// Si la lista tiene menos de p elementos lo insertará como último elemento.
 	@ParameterizedTest(name="addAtPos {0} {1} in list")
     @CsvFileSource(resources = "/AddAtPos.csv", numLinesToSkip = 0)
 	public void addAtPos(int pos,String s) {
@@ -63,9 +63,13 @@ class addTest {
 				myList.add(0, "["+s);
 			}
 			else if(pos >= listaTest.size()) {
-		
-				myList.set(listaTest.size()-1, myList.get(listaTest.size()-1).replace(']', Character.MIN_VALUE));
-				myList.add(listaTest.size(), s+ "]");
+				if(pos==listaTest.size()) {
+					myList.add(listaTest.size()-1, s);
+				}
+				else {
+					myList.set(listaTest.size()-1, myList.get(listaTest.size()-1).replace(']', Character.MIN_VALUE));
+					myList.add(listaTest.size(), s+ "]");
+				}
 			}
 			else {
 				myList.add(pos-1, s);
@@ -85,11 +89,10 @@ class addTest {
 		}
 	}
 	
-	
+	//Metodo addNTimes
 	@ParameterizedTest(name="addNTimes {0} {1} times in list")
     @CsvFileSource(resources = "/AddNTimes.csv", numLinesToSkip = 0)
 	public void addNTimes(int i,String s) {
-		
 			//Construimos la string esperada
 			String aux = "";
 			if(i>0) {

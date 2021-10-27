@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import com.cajanegra.SingleLinkedListImpl;
 // empty size toString
-class otherTests {
+class OtherTests {
 
 	private SingleLinkedListImpl<String> listaTest; 
 	
