@@ -11,72 +11,106 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.Suite;
+import org.junit.runner.RunWith;
 
 import com.cajanegra.EmptyCollectionException;
 import com.cajanegra.SingleLinkedListImpl;
 
+@DisplayName("Tests que incluyen los del tipo Reverse y Remove")
 class ReverseAndRemoveTests {
 
 	private static SingleLinkedListImpl<String> listaTest,listaVacia,listaUnElemento;
 	
 	@BeforeEach
 	public void setUp() {
-		this.listaTest = new SingleLinkedListImpl<String>("A","B","C","A","B");
+		this.listaTest = new SingleLinkedListImpl<String>("A","B","C","B");
 		this.listaVacia = new SingleLinkedListImpl<String>();
 		this.listaUnElemento = new SingleLinkedListImpl<String>("A");
 	}
 	
-	@ParameterizedTest
-	@MethodSource("provideParameters")
-	public void reverse(SingleLinkedListImpl<String> lista) {
-		StringBuilder builder = new StringBuilder(lista.toString());
-		builder=builder.reverse(); 
-		builder=builder.deleteCharAt(0);
-		builder=builder.deleteCharAt(builder.length()-1);
-		String finalString="";
-		for(int i=0;i<builder.length();++i){
-	        if(Character.isWhitespace(builder.charAt(i))){
-	        	builder.deleteCharAt(i);
-	            i--;
-	        }
-	        if(Character.isAlphabetic(builder.charAt(i))) {
-	        	if(i==builder.length()-1)
-	        		finalString += builder.toString().charAt(i);
-	        	else {
-	        		finalString += builder.toString().charAt(i)+", ";
-	        		builder.deleteCharAt(i);
-	        	}
-	        }
-	    }
-		assertEquals("["+finalString+"]", lista.reverse().toString());
+	@Nested
+	@DisplayName("reverse()")
+	class reverse{
+		@Test
+		public void reverseCasoLleno() {
+			assertEquals("[B, C, B, A]", listaTest.reverse().toString());
+		}
+		@Test
+		public void reverseCasoVacio() {
+			assertEquals("[]", listaVacia.reverse().toString());
+		}
+		@Test
+		public void reverseCasoUnElemento() {
+			assertEquals("[A]", listaUnElemento.reverse().toString());
+		}
 	}
 	
-	@ParameterizedTest
-	@MethodSource("provideParameters")
-	public void removeLast(SingleLinkedListImpl<String> lista) throws EmptyCollectionException {
-		StringBuilder builder = new StringBuilder(lista.toString());
-		if(!builder.isEmpty()) {
-			builder = builder.deleteCharAt(0);
-			builder = builder.deleteCharAt(builder.length() - 1);
-			for (int i = 0; i < 3; i++) {
-				builder = builder.deleteCharAt(builder.length() - 1);
-			}
-			lista.removeLast();
-			assertEquals("[" + builder.toString() + "]", lista.toString());
+	@Nested
+	@DisplayName("removeLast()")
+	class removeLast{
+		@Test
+		public void removeLastCasoLLeno() throws EmptyCollectionException {
+			listaTest.removeLast();
+			assertEquals("[A, B, C]", listaTest.toString());	
 		}
-		else {
+		@Test
+		public void removeLastCasoVacio() throws EmptyCollectionException {
 			Assertions.assertThrows(EmptyCollectionException.class, () -> {
-				lista.removeLast();
+				listaVacia.removeLast();
+			});
+		}
+		@Test
+		public void removeLastCasoUnElemento() throws EmptyCollectionException {
+			listaUnElemento.removeLast();
+			assertEquals("[]", listaUnElemento.toString());
+		}
+	}
+	
+	@Nested
+	@DisplayName("removeLast(tElem) de [A, B, C, B]")
+	class removeLasttElem{
+		@Test
+		public void removeLastA() throws NoSuchElementException, EmptyCollectionException{
+			listaTest.removeLast("A");
+			assertEquals("[B, C, B]", listaTest.toString());
+		}
+		@Test
+		public void removeLastB() throws NoSuchElementException, EmptyCollectionException{
+			listaTest.removeLast("B");
+			assertEquals("[A, B, C]", listaTest.toString());
+		}
+		@Test
+		public void removeLastC() throws NoSuchElementException, EmptyCollectionException{
+			listaTest.removeLast("C");
+			assertEquals("[A, B, B]", listaTest.toString());
+		}
+		@Test
+		public void removeLastD() throws NoSuchElementException, EmptyCollectionException{
+			Assertions.assertThrows(NoSuchElementException.class, () -> {
+				listaTest.removeLast("D");
+			});
+		}
+		@Test
+		public void removeLastAEnListaVacía() throws NoSuchElementException, EmptyCollectionException{
+			Assertions.assertThrows(EmptyCollectionException.class, () -> {
+				listaVacia.removeLast("A");
 			});
 		}
 	}
 	
+	
+	/*
 	// DUDA EN ESTE MÉTODO
 	@ParameterizedTest(name="removeLast {0} in list")
     @CsvFileSource(resources = "/RemoveLastTelem.csv", numLinesToSkip = 0)
@@ -120,14 +154,8 @@ class ReverseAndRemoveTests {
 			});
 		}
 	}
+	*/
 	
-	private static Stream<Arguments> provideParameters() {
-	    return Stream.of(
-	            Arguments.of(listaTest),
-	            Arguments.of(listaVacia),
-	            Arguments.of(listaUnElemento)
-	    );
-	}
 
 
 }
