@@ -11,7 +11,7 @@ import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
 
-// isSubList(AbstractSingleLinkedListImpl<T> part)
+@DisplayName("Tests que incluyen los de tipo SubList")
 class SubListsTests {
     private static SingleLinkedListImpl<String> listaTest, listaVacia, listaUnElemento, listaAux, listaAux1;
 
