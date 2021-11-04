@@ -30,13 +30,14 @@ import com.cajanegra.SingleLinkedListImpl;
 @DisplayName("Tests que incluyen los del tipo Reverse y Remove")
 class ReverseAndRemoveTests {
 
-	private static SingleLinkedListImpl<String> listaTest,listaVacia,listaUnElemento;
+	private static SingleLinkedListImpl<String> listaTest,listaVacia,listaUnElemento,listaTodosPosiblesElementos;
 	
 	@BeforeEach
 	public void setUp() {
 		this.listaTest = new SingleLinkedListImpl<String>("A","B","C","B");
 		this.listaVacia = new SingleLinkedListImpl<String>();
 		this.listaUnElemento = new SingleLinkedListImpl<String>("A");
+		this.listaTodosPosiblesElementos = new SingleLinkedListImpl<String>("A","B","M","B","Y","Z","@","[");
 	}
 	
 	@Nested
@@ -78,8 +79,60 @@ class ReverseAndRemoveTests {
 	}
 	
 	@Nested
-	@DisplayName("removeLast(tElem) de [A, B, C, B]")
+	@DisplayName("removeLast(tElem) de [A, B, M, B, Y, Z, @, [] y de una lista vacía")
 	class removeLasttElem{
+		
+		@Test
+		public void removeLastA() throws NoSuchElementException, EmptyCollectionException{
+			listaTodosPosiblesElementos.removeLast("A");
+			assertEquals("[B, M, B, Y, Z, @, []", listaTodosPosiblesElementos.toString());
+		}
+		@Test
+		public void removeLastB() throws NoSuchElementException, EmptyCollectionException{
+			listaTodosPosiblesElementos.removeLast("B");
+			assertEquals("[A, B, M, Y, Z, @, []", listaTodosPosiblesElementos.toString());
+		}
+		@Test
+		public void removeLastM() throws NoSuchElementException, EmptyCollectionException{
+			listaTodosPosiblesElementos.removeLast("M");
+			assertEquals("[A, B, B, Y, Z, @, []", listaTodosPosiblesElementos.toString());
+		}
+		@Test
+		public void removeLastY() throws NoSuchElementException, EmptyCollectionException{
+			listaTodosPosiblesElementos.removeLast("Y");
+			assertEquals("[A, B, M, B, Z, @, []", listaTodosPosiblesElementos.toString());
+		}
+		@Test
+		public void removeLastZ() throws NoSuchElementException, EmptyCollectionException{
+			listaTodosPosiblesElementos.removeLast("Z");
+			assertEquals("[A, B, M, B, Y, @, []", listaTodosPosiblesElementos.toString());
+		}
+		@Test
+		public void removeLastArroba() throws NoSuchElementException, EmptyCollectionException{
+			listaTodosPosiblesElementos.removeLast("@");
+			assertEquals("[A, B, M, B, Y, Z, []", listaTodosPosiblesElementos.toString());
+		}
+		@Test
+		public void removeLastCorchete() throws NoSuchElementException, EmptyCollectionException{
+			listaTodosPosiblesElementos.removeLast("[");
+			assertEquals("[A, B, M, B, Y, Z, @]", listaTodosPosiblesElementos.toString());
+		}
+		@Test
+		public void removeLastW() throws NoSuchElementException, EmptyCollectionException{
+			Assertions.assertThrows(NoSuchElementException.class, () -> {
+				listaTodosPosiblesElementos.removeLast("W");
+			});
+		}
+		@Test
+		public void removeLastAEnListaVacia() throws NoSuchElementException, EmptyCollectionException{
+			Assertions.assertThrows(EmptyCollectionException.class, () -> {
+				listaVacia.removeLast("A");
+			});
+		}
+		
+	}
+	
+		/*
 		@Test
 		public void removeLastA() throws NoSuchElementException, EmptyCollectionException{
 			listaTest.removeLast("A");
@@ -96,9 +149,9 @@ class ReverseAndRemoveTests {
 			assertEquals("[A, B, B]", listaTest.toString());
 		}
 		@Test
-		public void removeLastD() throws NoSuchElementException, EmptyCollectionException{
+		public void removeLastW() throws NoSuchElementException, EmptyCollectionException{
 			Assertions.assertThrows(NoSuchElementException.class, () -> {
-				listaTest.removeLast("D");
+				listaTest.removeLast("W");
 			});
 		}
 		@Test
@@ -107,9 +160,8 @@ class ReverseAndRemoveTests {
 				listaVacia.removeLast("A");
 			});
 		}
-	}
-	
-	
+		*/
+		
 	/*
 	// DUDA EN ESTE MÉTODO
 	@ParameterizedTest(name="removeLast {0} in list")
