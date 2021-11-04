@@ -22,6 +22,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+@DisplayName("Tests que incluyen los del tipo addLast, addFirst, addAtPos y addNTimes")
 class AddTest {
 	private SingleLinkedListImpl<String> listaTest; 
 	

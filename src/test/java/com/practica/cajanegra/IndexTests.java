@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -18,6 +19,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import com.cajanegra.SingleLinkedListImpl;
 // Clase que comprueba el comportamiento de getAtPos y indexOf
+@DisplayName("Tests que incluyen los del tipo indexOf y getAtPos")
 class IndexTests {
 
 	private SingleLinkedListImpl<String> listaTest; 
