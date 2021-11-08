@@ -20,12 +20,12 @@ class IndexTests {
 
     @BeforeEach
     public void setUp() {
-        this.listaTest = new SingleLinkedListImpl<String>("@", "A", "B", "M", "Y", "Z", "[");
+        this.listaTest = new SingleLinkedListImpl<String>("A", "B", "M", "Y", "Z");
     }
 
     //Indica la posición donde se encuentra la primera aparición de elem desde el principio de la lista (las posiciones empiezan en 1).
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "indexOf {0}")
     @ValueSource(strings = {"A", "B", "M", "Y", "Z", "@", "[", "W"})
     public void indexOf(String elem) {
         int primPos = 1;
@@ -51,8 +51,8 @@ class IndexTests {
     }
 
     // Devuelve el elemento de la posición pos
-    @ParameterizedTest
-    @ValueSource(ints = {1, 2, 6, 7, 0, 8})
+    @ParameterizedTest(name = "getAtPos {0}")
+    @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6})
     public void getAtPos(int pos) {
         // Posicion invalida
         if (pos <= 0 || pos > listaTest.size()) {

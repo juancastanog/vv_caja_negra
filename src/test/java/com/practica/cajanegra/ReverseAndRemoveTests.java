@@ -3,6 +3,8 @@ package com.practica.cajanegra;
 import com.cajanegra.EmptyCollectionException;
 import com.cajanegra.SingleLinkedListImpl;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.NoSuchElementException;
 
@@ -19,7 +21,7 @@ class ReverseAndRemoveTests {
 		this.listaTest = new SingleLinkedListImpl<String>("A","B","C","B");
 		this.listaVacia = new SingleLinkedListImpl<String>();
 		this.listaUnElemento = new SingleLinkedListImpl<String>("A");
-		this.listaTodosPosiblesElementos = new SingleLinkedListImpl<String>("A","B","M","B","Y","Z","@","[");
+		this.listaTodosPosiblesElementos = new SingleLinkedListImpl<String>("A","B","M","B","Y","Z");
 	}
 	
 	@Nested
@@ -61,48 +63,39 @@ class ReverseAndRemoveTests {
 	}
 	
 	@Nested
-	@DisplayName("removeLast(tElem) de [A, B, M, B, Y, Z, @, [] y de una lista vac�a")
+	@DisplayName("removeLast(tElem) de [A, B, M, B, Y, Z] y de una lista vac�a")
 	class removeLasttElem{
 		
 		@Test
 		public void removeLastA() throws NoSuchElementException, EmptyCollectionException{
 			listaTodosPosiblesElementos.removeLast("A");
-			assertEquals("[B, M, B, Y, Z, @, []", listaTodosPosiblesElementos.toString());
+			assertEquals("[B, M, B, Y, Z]", listaTodosPosiblesElementos.toString());
 		}
 		@Test
 		public void removeLastB() throws NoSuchElementException, EmptyCollectionException{
 			listaTodosPosiblesElementos.removeLast("B");
-			assertEquals("[A, B, M, Y, Z, @, []", listaTodosPosiblesElementos.toString());
+			assertEquals("[A, B, M, Y, Z]", listaTodosPosiblesElementos.toString());
 		}
 		@Test
 		public void removeLastM() throws NoSuchElementException, EmptyCollectionException{
 			listaTodosPosiblesElementos.removeLast("M");
-			assertEquals("[A, B, B, Y, Z, @, []", listaTodosPosiblesElementos.toString());
+			assertEquals("[A, B, B, Y, Z]", listaTodosPosiblesElementos.toString());
 		}
 		@Test
 		public void removeLastY() throws NoSuchElementException, EmptyCollectionException{
 			listaTodosPosiblesElementos.removeLast("Y");
-			assertEquals("[A, B, M, B, Z, @, []", listaTodosPosiblesElementos.toString());
+			assertEquals("[A, B, M, B, Z]", listaTodosPosiblesElementos.toString());
 		}
 		@Test
 		public void removeLastZ() throws NoSuchElementException, EmptyCollectionException{
 			listaTodosPosiblesElementos.removeLast("Z");
-			assertEquals("[A, B, M, B, Y, @, []", listaTodosPosiblesElementos.toString());
+			assertEquals("[A, B, M, B, Y]", listaTodosPosiblesElementos.toString());
 		}
-		@Test
-		public void removeLastArroba() throws NoSuchElementException, EmptyCollectionException{
-			listaTodosPosiblesElementos.removeLast("@");
-			assertEquals("[A, B, M, B, Y, Z, []", listaTodosPosiblesElementos.toString());
-		}
-		@Test
-		public void removeLastCorchete() throws NoSuchElementException, EmptyCollectionException{
-			listaTodosPosiblesElementos.removeLast("[");
-			assertEquals("[A, B, M, B, Y, Z, @]", listaTodosPosiblesElementos.toString());
-		}
-		@Test
-		public void removeLastW() throws NoSuchElementException, EmptyCollectionException{
+		@ParameterizedTest(name = "removeLast{0}")
+	    @ValueSource(strings = {"@","[","W"})
+		public void removeLastNoSuchElement(String s) throws NoSuchElementException, EmptyCollectionException{
 			Assertions.assertThrows(NoSuchElementException.class, () -> {
-				listaTodosPosiblesElementos.removeLast("W");
+				listaTodosPosiblesElementos.removeLast(s);
 			});
 		}
 		@Test
@@ -114,36 +107,6 @@ class ReverseAndRemoveTests {
 		
 	}
 	
-		/*
-		@Test
-		public void removeLastA() throws NoSuchElementException, EmptyCollectionException{
-			listaTest.removeLast("A");
-			assertEquals("[B, C, B]", listaTest.toString());
-		}
-		@Test
-		public void removeLastB() throws NoSuchElementException, EmptyCollectionException{
-			listaTest.removeLast("B");
-			assertEquals("[A, B, C]", listaTest.toString());
-		}
-		@Test
-		public void removeLastC() throws NoSuchElementException, EmptyCollectionException{
-			listaTest.removeLast("C");
-			assertEquals("[A, B, B]", listaTest.toString());
-		}
-		@Test
-		public void removeLastW() throws NoSuchElementException, EmptyCollectionException{
-			Assertions.assertThrows(NoSuchElementException.class, () -> {
-				listaTest.removeLast("W");
-			});
-		}
-		@Test
-		public void removeLastAEnListaVac�a() throws NoSuchElementException, EmptyCollectionException{
-			Assertions.assertThrows(EmptyCollectionException.class, () -> {
-				listaVacia.removeLast("A");
-			});
-		}
-		*/
 		
-
 
 }

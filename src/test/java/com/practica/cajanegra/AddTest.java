@@ -16,11 +16,12 @@ import static org.junit.Assert.assertEquals;
 
 @DisplayName("Tests que incluyen los del tipo addLast, addFirst, addAtPos y addNTimes")
 class AddTest {
-    private SingleLinkedListImpl<String> listaTest;
+    private SingleLinkedListImpl<String> listaTest,listaTestAtPos;
 
     @BeforeEach
     public void setUp() {
         this.listaTest = new SingleLinkedListImpl<String>("A", "B", "C");
+        this.listaTestAtPos = new SingleLinkedListImpl<String>("A", "B", "C","D","E");
     }
 
 
@@ -49,17 +50,17 @@ class AddTest {
 
         // Posicion valida
         if (pos > 0) {
-            List<String> myList = new ArrayList<String>(Arrays.asList(this.listaTest.toString().split(",")));
+            List<String> myList = new ArrayList<String>(Arrays.asList(this.listaTestAtPos.toString().split(",")));
             //Caso primer elemento, borramos corchete del elemento anterior
             if (pos == 1) {
                 myList.set(0, myList.get(0).replace('[', Character.MIN_VALUE));
                 myList.add(0, "[" + s);
-            } else if (pos >= listaTest.size()) {
-                if (pos == listaTest.size()) {
-                    myList.add(listaTest.size() - 1, s);
+            } else if (pos >= listaTestAtPos.size()) {
+                if (pos == listaTestAtPos.size()) {
+                    myList.add(listaTestAtPos.size() - 1, s);
                 } else {
-                    myList.set(listaTest.size() - 1, myList.get(listaTest.size() - 1).replace(']', Character.MIN_VALUE));
-                    myList.add(listaTest.size(), s + "]");
+                    myList.set(listaTestAtPos.size() - 1, myList.get(listaTestAtPos.size() - 1).replace(']', Character.MIN_VALUE));
+                    myList.add(listaTestAtPos.size(), s + "]");
                 }
             } else {
                 myList.add(pos - 1, s);
@@ -69,11 +70,11 @@ class AddTest {
                 aux = myList.get(j).trim();
                 finalString += (j < myList.size() - 1) ? aux + ", " : aux + "";
             }
-            this.listaTest.addAtPos(s, pos);
-            assertEquals(finalString, this.listaTest.toString());
+            this.listaTestAtPos.addAtPos(s, pos);
+            assertEquals(finalString, this.listaTestAtPos.toString());
         } else {
             Assertions.assertThrows(IllegalArgumentException.class, () -> {
-                this.listaTest.addAtPos(s, pos);
+                this.listaTestAtPos.addAtPos(s, pos);
             });
         }
     }
@@ -82,16 +83,16 @@ class AddTest {
     @ParameterizedTest(name = "addNTimes {0} {1} times in list")
     @CsvFileSource(resources = "/AddNTimes.csv", numLinesToSkip = 0)
     public void addNTimes(int i, String s) {
-        //Construimos la string esperada
         String aux = "";
-        if (i > 0) {
+        if (i >= 0) {
             for (int j = 0; j < i; j++) {
-                //Si no estamos ante el elemento final insertamos ,
+                //Si no estamos ante el elemento final insertamos
                 aux += (j < i - 1) ? s + ", " : s + "";
             }
             this.listaTest.addNTimes(s, i);
             assertEquals("[A, B, C, " + aux + "]", this.listaTest.toString());
-        } else {
+        }
+        else {
             Assertions.assertThrows(IllegalArgumentException.class, () -> {
                 this.listaTest.addNTimes(s, i);
             });

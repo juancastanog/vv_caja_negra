@@ -43,74 +43,44 @@ class SubListsTests {
         //SubLista en la primera posición
         @Test
         public void subListIni() {
-            assertEquals(1, subList(listaIni));
+            assertEquals(1, listaTest.isSubList(listaIni));
+            
         }
 
         //La sublista está en la última posición
         @Test
         public void lastPosition() {
             listaFinal = new SingleLinkedListImpl<String>("Z");
-            assertEquals(5, subList(listaFinal));
+            assertEquals(5, listaTest.isSubList(listaFinal));
         }
 
         //La sublista comienza en una posición intermedia
         @Test
         public void subListFoundInMid() {
-            assertEquals(2, subList(listaMid));
+            assertEquals(2, listaTest.isSubList(listaMid));
         }
 
         //El primer elemento no está en la lista y el resto sí
         @Test
         public void subListInicioFalla() {
-            assertEquals(-1, subList(listaInicioFalla));
+            assertEquals(-1, listaTest.isSubList(listaInicioFalla));
         }
 
         //El último elemento no está en la lista y el resto sí
         @Test
         public void subListFinalFalla() {
-            assertEquals(-1, subList(listaFinalFalla));
+            assertEquals(-1, listaTest.isSubList(listaFinalFalla));
         }
         
         @Test
         public void subListEmpty() {
-            assertEquals(0, subList(listaVacia));
+            assertEquals(0, listaTest.isSubList(listaVacia));
         }
 
         @Test
         public void subListNotFound() {
-            assertEquals(-1, subList(listaNoContenida));
+            assertEquals(-1, listaTest.isSubList(listaNoContenida));
         }
 
-    }
-
-    public int subList(AbstractSingleLinkedListImpl<String> part) {
-        if (part.isEmpty()) {
-            return 0;
-        }
-        int primPos = 0, auxCont = 0;
-        boolean encontrado = false;
-        boolean startSubList = false;
-        Iterator iterator1 = part.iterator();
-        for (Iterator iterator = listaTest.iterator(); iterator.hasNext() && !encontrado; ) {
-            String actString = (String) iterator.next();
-            String aux = (String) iterator1.next();
-            primPos++;
-            if (actString.equals(aux)) {
-                if (!startSubList) {
-                    auxCont = primPos;
-                    startSubList = !startSubList;
-                }
-                if (!iterator1.hasNext()) {
-                    encontrado = true;
-                }
-            } else if (!actString.equals(iterator1)) {
-                iterator1 = part.iterator();
-                startSubList = false;
-            }
-        }
-        if (encontrado)
-            return auxCont;
-        else
-            return -1;
     }
 }
