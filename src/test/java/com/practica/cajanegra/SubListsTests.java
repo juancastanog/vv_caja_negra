@@ -13,55 +13,74 @@ import static org.junit.Assert.assertEquals;
 
 @DisplayName("Tests que incluyen los de tipo SubList")
 class SubListsTests {
-    private static SingleLinkedListImpl<String> listaTest, listaVacia, listaUnElemento, listaAux, listaAux1;
+    private static SingleLinkedListImpl<String> listaTest, listaVacia, listaFinal, listaFinalFalla, listaIni, listaMid, listaInicioFalla, listaNoContenida;
 
     @BeforeEach
     public void setUp() {
-        this.listaTest = new SingleLinkedListImpl<String>("A", "B", "C", "D");
+        this.listaTest = new SingleLinkedListImpl<String>("A", "B", "M", "Y", "Z");
         this.listaVacia = new SingleLinkedListImpl<String>();
-        this.listaUnElemento = new SingleLinkedListImpl<String>("Z");
-        this.listaAux = new SingleLinkedListImpl<String>("B", "C");
-        this.listaAux1 = new SingleLinkedListImpl<String>("C", "D");
-
+        this.listaFinal = new SingleLinkedListImpl<String>("Y","Z");
+        this.listaInicioFalla = new SingleLinkedListImpl<String>("X", "A");
+        this.listaFinalFalla = new SingleLinkedListImpl<String>("A", "C");
+        this.listaIni = new SingleLinkedListImpl<String>("A", "B");
+        this.listaMid = new SingleLinkedListImpl<String>("B", "M", "Y");
+        this.listaNoContenida = new SingleLinkedListImpl<String>("E","R");
     }
 
     /*
     En la siguente clase se comprueban los siguientes casos:
     1: El elemento que se busca en la lista no existe.
-    2: La lista que se pasa por parámetro está vacía
-    3: Los elementos están al inicio de la lista
-    4: Los elementos están situados en una posición intermedia de la lista
-    5: El elemento se sitúa en la última posición
+    2: La lista que se pasa por parï¿½metro estï¿½ vacï¿½a
+    3: Los elementos estï¿½n al inicio de la lista
+    4: Los elementos estï¿½n situados en una posiciï¿½n intermedia de la lista
+    5: El elemento se sitï¿½a en la ï¿½ltima posiciï¿½n
      */
 
     @Nested
     @DisplayName("sublist()")
     class sublist {
+
+        //SubLista en la primera posiciÃ³n
         @Test
-        public void subListNotFound() {
-            assertEquals(-1, subList(listaUnElemento));
+        public void subListIni() {
+            assertEquals(1, subList(listaIni));
         }
 
+        //La sublista estÃ¡ en la Ãºltima posiciÃ³n
+        @Test
+        public void lastPosition() {
+            listaFinal = new SingleLinkedListImpl<String>("Z");
+            assertEquals(5, subList(listaFinal));
+        }
+
+        //La sublista comienza en una posiciÃ³n intermedia
+        @Test
+        public void subListFoundInMid() {
+            assertEquals(2, subList(listaMid));
+        }
+
+        //El primer elemento no estÃ¡ en la lista y el resto sÃ­
+        @Test
+        public void subListInicioFalla() {
+            assertEquals(-1, subList(listaInicioFalla));
+        }
+
+        //El Ãºltimo elemento no estÃ¡ en la lista y el resto sÃ­
+        @Test
+        public void subListFinalFalla() {
+            assertEquals(-1, subList(listaFinalFalla));
+        }
+        
         @Test
         public void subListEmpty() {
             assertEquals(0, subList(listaVacia));
         }
 
         @Test
-        public void subListFound1() {
-            assertEquals(3, subList(listaAux1));
+        public void subListNotFound() {
+            assertEquals(-1, subList(listaNoContenida));
         }
 
-        @Test
-        public void lastPosition() {
-            listaUnElemento = new SingleLinkedListImpl<String>("D");
-            assertEquals(4, subList(listaUnElemento));
-        }
-
-        @Test
-        public void subListFound() {
-            assertEquals(2, subList(listaAux));
-        }
     }
 
     public int subList(AbstractSingleLinkedListImpl<String> part) {
